@@ -11,11 +11,19 @@ struct string_wrapper {
 	char value[N]{};
 };
 
+
 template<typename T, size_t N1, size_t N2>
 consteval auto concat(string_wrapper<T, N1> s1, string_wrapper<T, N2> s2) {
 	string_wrapper<T, N1 + N2 - 1> result;
 	std::copy(s1.value, s1.value + N1 - 1, result.value);
 	std::copy(s2.value, s2.value + N2, result.value + N1 - 1);
+	return result;
+}
+
+template<size_t start, size_t end, typename T, size_t N>
+consteval auto substr(string_wrapper<T, N> s) { // [start, end)
+	string_wrapper<T, end - start + 1> result;
+	std::copy(s.value + start, s.value + end, result.value);
 	return result;
 }
 
@@ -41,5 +49,6 @@ int main() {
 	Type_t<"string"> s = "Hello";
 	Type_t<"int"> a = 5;
 	Type_t<concat(string_wrapper("st"), string_wrapper("ring"))> s2 = "World";
-	cout << s2;
+	Type_t<substr<4, 10>(string_wrapper("int string"))> s3 = "hello world";
+	cout << s3;
 }
