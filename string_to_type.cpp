@@ -7,7 +7,7 @@ struct string_wrapper {
     constexpr string_wrapper(const T(&str)[N]) {
         std::copy(str, str + N, value);
     }
-    char value[N]{};
+    T value[N]{};
 };
 
 template<string_wrapper>
